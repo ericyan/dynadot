@@ -20,10 +20,14 @@ module Dynadot
         data = response.parsed_response.split("\n")
         data.delete_at(1)
 
-        return {
-          error: data[0, 2] != 'ok' ? data.shift.split(",")[1] : nil,
-          results: data.map { |line| line.split(",") }
-        }
+        error = data[0, 2] != 'ok' ? data.shift.split(",")[1] : nil
+        results = data.map { |line| line.split(",") }
+
+        if error
+          raise error
+        else
+          return results
+        end
       end
   end
 end
