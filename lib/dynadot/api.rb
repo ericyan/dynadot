@@ -32,6 +32,10 @@ module Dynadot
       return Hash[results]
     end
 
+    def availabile?(domain)
+      search(domain)[domain]
+    end
+
     private
       def parse(response)
         data = response.parsed_response.split("\n")
