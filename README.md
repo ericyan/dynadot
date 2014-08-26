@@ -18,7 +18,21 @@ Or install it yourself as:
 
 ## Usage
 
-*This is currently a work in progress that is not suitable to be used in production.*
+    require 'dynadot'
+
+    dynadot = Dynadot::Api.new('DYNADOT_API_KEY')
+
+    # Execute a command and get raw results
+    dynadot.execute :search, { domain0: "example.com", domain1: "example.net" }
+    # => [["domain0", "example.com", "", "no"], ["domain1", "example.net", "", "no"]]
+
+    # A less messy way to do a domain search
+    dynadot.search("example.com", "example.net")
+    # => {"example.com"=>false, "example.net"=>false }
+
+    # Short-hand for availability check
+    dynadot.availabile?("example.com")
+    # => false
 
 ## Contributing
 
