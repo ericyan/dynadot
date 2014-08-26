@@ -15,6 +15,23 @@ module Dynadot
       parse(response)
     end
 
+    def search(*domains)
+      parameters = Hash[domains.map.with_index { |domain, index| ["domain#{index}" , domain] }]
+      results = execute(:search, parameters).map do |result|
+        domain, availability = result[1], result[3]
+
+        case availability
+        when 'yes' then [domain, true]
+        when 'no' then [domain, false]
+        when 'offline' then [domain, nil]
+        when 'system_busy' then [domain, nil]
+        when 'error' then raise "Error processing #{domain}: #{result[4]}"
+        end
+      end
+
+      return Hash[results]
+    end
+
     private
       def parse(response)
         data = response.parsed_response.split("\n")
